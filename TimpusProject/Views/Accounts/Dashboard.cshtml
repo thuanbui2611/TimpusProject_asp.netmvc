@@ -1,0 +1,143 @@
+﻿@model TimpusProject.Models.Customer
+
+@{
+    ViewData["Title"] = Model.Username + " Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Order> listOrder = ViewBag.Order;
+    var TotalPriceOrder = listOrder.Sum(x => x.Total).Value.ToString("#,###");
+    TimpusProject.ModelView.ChangePasswordVM changePassword = new TimpusProject.ModelView.ChangePasswordVM();
+}
+
+<section style="background-color: #eee">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <img src="https://th.bing.com/th/id/R.0a5e7a1fa5a0c49f27a55ab285e7d375?rik=zzuvfcCsf4I8vw&pid=ImgRaw&r=0" alt="avatar"
+                             class="rounded-circle img-fluid" style="width: 150px;">
+                        <h5 class="my-3">@Html.DisplayFor(model => model.FullName)</h5>
+                        <p class="text-muted mb-1">&#64; @Model.Username</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-2 text-end">
+                                <p class="mb-0">Full Name:</p>
+                            </div>
+                            <div class="col-sm-10">
+                                <p class="text-muted mb-0">@Model.FullName</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-2 text-end">
+                                <p class="mb-0">Email:</p>
+                            </div>
+                            <div class="col-sm-10">
+                                <p class="text-muted mb-0">@Model.Email</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-2 text-end">
+                                <p class="mb-0">Phone:</p>
+                            </div>
+                            <div class="col-sm-10">
+                                <p class="text-muted mb-0">@Model.Phone</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-2 text-end">
+                                <p class="mb-0">Address:</p>
+                            </div>
+                            <div class="col-sm-10">
+                                <p class="text-muted mb-0">@Model.Address</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @await Html.PartialAsync("_ChangePasswordPartialView", changePassword)
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="col-lg-12">
+                    <div class="card mb-4 mb-md-0">
+                        <div class="card-body">
+                            <p class="mb-3"><span class="lead me-1">Your Orders:</span></p>
+                            <hr />
+                            @if (listOrder != null && listOrder.Count() > 0)
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                            <tr class="fst-italic font-monospace fs-6 text-center table-primary">
+                                                <th>Order ID</th>
+                                                <th>Date of purchase</th>
+                                                <th>Total</th>
+                                                <th>Status</th>
+                                                <th>View</th>
+                                            </tr>
+                                            @foreach (var item in listOrder)
+                                            {
+                                                <tr class="text-muted text-center">
+                                                    <td>#@item.OrderId</td>
+                                                    <td>@item.OrderDate</td>
+                                                    <td>@item.Total.Value.ToString("#,###") $</td>
+                                                    <td>@item.TransacStatus.Status</td>
+                                                    <td>
+                                                        <a href="javascript:void(0)" class="xemdonhang text-success fw-bolder text-decoration-underline" data-madonhang="@item.OrderId"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <p>You have no order yet!</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="col-lg-12" id="records_table">
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+@section Scripts{
+    <script>
+        $(document).ready(function() {
+            $(".xemdonhang").click(function() {
+                var madonhang = $(this).attr("data-madonhang")
+                $.ajax({
+                    url: '/Orders/Details',
+                    datatype: "json",
+                    type: "POST",
+                    data: { id: madonhang },
+                    async: true,
+                    success: function(results) {
+                        $("#records_table").html("");
+                        $("#records_table").html(results);
+                    },
+                    error: function(xhr) {
+                        alert(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+}

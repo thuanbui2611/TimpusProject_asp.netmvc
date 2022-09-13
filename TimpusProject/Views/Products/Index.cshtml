@@ -1,0 +1,109 @@
+﻿@model IEnumerable<TimpusProject.Models.Product>
+
+@{
+    ViewData["Title"] = "Shop";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Start Content -->
+<div class="container py-5">
+    <div class="row">
+
+        <div class="col-lg-3">
+            <div class="fixed-cate">
+                <h1 class="h4 pb-4">Categories</h1>
+                <ul class="list-unstyled templatemo-accordion">
+                    @if (ViewBag.Categories.Count != 0)
+                    {
+                        <a class="text-decoration-none" asp-action="Index" asp-controller="Products">
+                        <li class="pb-3" style="font-size:15px !important">
+                            All
+                        </li>
+                        </a>
+                        @for (int i = 0; i < ViewBag.Categories.Count; i++)
+                        {
+                            <a class="text-decoration-none" asp-action="Index" asp-controller="Products" asp-route-CatId="@ViewBag.Categories[i].CatId">
+                            <li class="pb-3" style="font-size:15px !important">
+                                    @ViewBag.Categories[i].CatName
+                            </li>
+                            </a>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-9" id="products">
+            <div class="row pb-5">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-2">
+                    <button class="sort btn btn-light" data-sort="productprice">
+                        Sort by Price
+                    </button>
+                </div>
+                <div class="col-lg-2">
+                    <button class="sort btn btn-light" data-sort="name">
+                        Sort by name
+                    </button>
+                </div>
+                <div class="col-lg-4">
+                    <div class="input-group rounded" name="SearchBOX">
+                        <span class="input-group-text border-0" id="search-addon">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        <input class="fuzzy-search form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="list row">
+
+
+                @if (Model != null)
+                {
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-12 col-md-4 mb-4 justify-content-evenly">
+                            <div class="container-product">
+                                <div class="card-product">
+                                    <div class="imgBx">
+                                        <img src="@item.Thumb">
+                                    </div>
+                                    <div class="contentBx">
+                                        <h4 class="name">@item.ProductName</h4>
+                                        <div class="price">
+                                            <h3>Price :</h3>
+                                            <span>$ </span><span class="productprice">@item.Price</span>
+                                        </div>
+                                        <a asp-action="Detail" asp-controller="Products" asp-route-id="@item.ProductId">Buy Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <div div="row">
+                <nav>
+                    <ul class="pagination pagination-lg justify-content-end">
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Content -->
+@section Scripts {
+    <script>
+        var options = {
+            valueNames: ['name', 'productprice'],
+            page: 9,
+            pagination: {
+                item: "<li class='page-item'><a class='page page-link' href='#'></a></li>",
+                outouterWindow: 2
+            }
+        };
+
+        var userList = new List('products', options);
+    </script>
+}

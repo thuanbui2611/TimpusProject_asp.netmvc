@@ -1,0 +1,137 @@
+﻿@model TimpusProject.Models.Product
+
+@{
+    ViewData["Title"] = Model.ProductName + " Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Open Content -->
+<section class="bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 mt-5">
+                <div class="card mb-3">
+                    <img class="card-img img-fluid" src="@Model.Thumb" alt="Card image cap" id="product-detail">
+                </div>
+            </div>
+            <!-- col end -->
+            <div class="col-lg-7 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="h2">@Model.ProductName</h1>
+                        <p class="h3 py-2">$ @Model.Price</p>
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <h6>ISBN:</h6>
+                            </li>
+                            <li class="list-inline-item">
+                                <p class="text-muted"><strong>#@Model.Isbn</strong></p>
+                            </li>
+                        </ul>
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <h6>Category:</h6>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="text-secondary" asp-action="Index" asp-controller="Products" asp-route-CatId="@Model.CatId">
+                                    <p>
+                                        <strong>@Model.Cat.CatName</strong>
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <h6>Publisher:</h6>
+                            </li>
+                            <li class="list-inline-item">
+                                <p class="text-muted"><strong>@Model.Publisher.FullName</strong></p>
+                            </li>
+                        </ul>
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <h6>Author:</h6>
+                            </li>
+                            @for (int i = 0; i < ViewBag.Authors.Count; i++)
+                            {
+                                <a asp-action="Details" asp-controller="Authors" asp-route-id="@ViewBag.Authors[i].AuthorId">
+                                <li class="list-inline-item">
+                                    <img src="@ViewBag.Authors[i].Author.Avatar" class="rounded-circle" style="width: 50px; height: 50px"
+                                     alt="Avatar" data-bs-toggle="tooltip" data-bs-placement="top" title="@ViewBag.Authors[i].Author.AuthorName" />
+                                </li>
+                                </a>
+                            }
+                        </ul>
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <h6>Stock left:</h6>
+                            </li>
+                            <li class="list-inline-item">
+                                <p class="text-muted"><strong>@Model.UnitInStock</strong></p>
+                            </li>
+                        </ul>
+                        <form action="" method="GET">
+                            <input type="hidden" id="txtsoLuong" name="txtsoLuong" value="1">
+                            <div class="row pb-3 add-to-cart">
+                                <div class="col d-grid">
+                                    <a type="submit" class="btn btn-success btn-lg" href="javascript:void(0)" name="submit" value="addtocard">Add To Cart</a>
+                                    <input hidden asp-for="ProductId" />
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container pb-5">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h6>Description:</h6>
+                    @Html.Raw(Model.Description)
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Close Content -->
+@section Scripts{
+    <script>
+        $(document).ready(function() {
+            $(function() {
+                $(".add-to-cart").click(function() {
+                    var productid = $('#ProductId').val();
+                    var amount = $('#txtsoLuong').val();
+                    $.ajax({
+                        url: '/api/cart/add',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            productID: productid,
+                            amount: amount
+                        },
+                        success: function(response) {
+                            if (response.result == 'Redirect') {
+                                window.location = response.url;
+                            }
+                            else {
+                                loadHeaderCart(); //Add Product success
+                                location.reload();
+                            }
+                            console.log(response); // log to the console to see whether it worked
+                        },
+                        error: function(error) {
+                            alert("There was an error posting the data to the server: " + error.responseText);
+                        }
+                    });
+                });
+            });
+            function loadHeaderCart() {
+                $('#numberCart').load("/AjaxContent/NumberCart");
+            }
+        });
+    </script>
+
+}

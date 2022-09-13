@@ -1,0 +1,114 @@
+﻿@model IEnumerable<TimpusProject.Models.Product>
+
+
+@{
+    ViewData["Title"] = "FptBook";
+}
+
+@if (ViewBag.HomeFlag.Count != 0)
+{
+    int flagIndex = 1;
+    <!-- Start Banner Hero -->
+    <div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel">
+        <ol class="carousel-indicators">
+            @foreach (Product product in ViewBag.HomeFlag)
+            {
+                <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="@flagIndex"></li>
+                flagIndex += 1;
+            }
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="container">
+                    <a class="text-decoration-none" style="color:inherit" asp-action="Detail" asp-controller="Products" asp-route-id="@ViewBag.HomeFlag[0].ProductId">
+                        <div class="row p-5">
+                            <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                                <img class="img-fluid" src="@ViewBag.HomeFlag[0].Thumb" alt="">
+                            </div>
+                            <div class="col-lg-6 mb-0 d-flex align-items-center">
+                                <div class="text-align-left">
+                                    <h1 class="h1">@ViewBag.HomeFlag[0].ProductName</h1>
+                                    <h3 class="h3">Category: @ViewBag.HomeFlag[0].Cat.CatName</h3>
+                                    @Html.Raw(ViewBag.HomeFlag[0].SmallDescription)
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            @for (int i = 1; i < ViewBag.HomeFlag.Count; i++)
+            {
+                <div class="carousel-item">
+                    <div class="container">
+                        <a class="text-decoration-none" style="color:inherit" asp-action="Detail" asp-controller="Products" asp-route-id="@ViewBag.HomeFlag[i].ProductId">
+                            <div class="row p-5">
+                                <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                                    <img class="img-fluid" src="@ViewBag.HomeFlag[i].Thumb" alt="">
+                                </div>
+                                <div class="col-lg-6 mb-0 d-flex align-items-center">
+                                    <div class="text-align-left">
+                                        <h1 class="h1">@ViewBag.HomeFlag[i].ProductName</h1>
+                                        <h3 class="h3">Category: @ViewBag.HomeFlag[i].Cat.CatName</h3>
+                                        @Html.Raw(ViewBag.HomeFlag[i].SmallDescription)
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+        <a class="carousel-control-prev text-decoration-none w-auto ps-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="prev">
+            <i class="fas fa-chevron-left"></i>
+        </a>
+        <a class="carousel-control-next text-decoration-none w-auto pe-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="next">
+            <i class="fas fa-chevron-right"></i>
+        </a>
+    </div>
+    <!-- End Banner Hero -->
+}
+
+
+@if (ViewBag.BestSellers.Count != 0)
+{
+    <!-- Start Featured Product -->
+    <section class="bg-light">
+        <div class="container py-5">
+            <div class="row text-center py-3">
+                <div class="col-lg-6 m-auto">
+                    <h1 class="h1">Best Sellers</h1>
+                    <p>
+                        Today’s featured deals and top books. <br />
+                        This is our best selling books - Great new deals.
+                    </p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                @for (int i = 0; i < ViewBag.BestSellers.Count; i++)
+                {
+                    <div class="col-12 col-md-3 mb-4 justify-content-evenly">
+                        <div class="container-product">
+                            <div class="card-product">
+                                <div class="imgBx">
+                                    <img src="@ViewBag.BestSellers[i].Thumb">
+                                </div>
+                                <div class="contentBx">
+                                    <h4>@ViewBag.BestSellers[i].ProductName</h4>
+                                    <div class="price">
+                                        <h3>Price :</h3>
+                                        <span>$ @ViewBag.BestSellers[i].Price</span>
+                                    </div>
+                                    <a asp-action="Detail" asp-controller="Products" asp-route-id="@ViewBag.BestSellers[i].ProductId">Buy Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+    <!-- End Featured Product -->
+}
+
+
+

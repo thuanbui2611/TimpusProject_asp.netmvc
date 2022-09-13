@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewData["Title"]</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/admin_assets/images/logo/favicon.png">
+
+    <!-- page css -->
+    <link href="~/admin_assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet">
+    <link href="~/admin_assets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/admin_assets/vendors/select2/select2.css" rel="stylesheet">
+
+    <!-- Core css -->
+    <link href="~/admin_assets/css/app.min.css" rel="stylesheet">
+
+    <!-- page css -->
+    <link href="~/admin_assets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="app">
+        <div class="layout">
+
+            @await Html.PartialAsync("_SideNavPartialView.cshtml")
+
+            <!-- Page Container START -->
+            <div class="page-container">
+                <div class="main-content">
+                    @RenderBody()
+                </div>
+
+
+                <!-- Footer START -->
+                <footer class="footer">
+                    <div class="footer-content">
+                        <div class="mb-2 mb-md-0">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>
+                            , Doan Thanh Dung - Student - GCS200419 | Bui Cong Thuan - Student - GCS200424 - University of Greenwich
+                        </div>
+                        <span>
+                            <span href="" class="text-dark m-r-15">Template:</span>
+                            <span class="text-gray">Enlink - Bootstrap Admin Template</span>
+                        </span>
+                    </div>
+                </footer>
+                <!-- Footer END -->
+
+            </div>
+            <!-- Page Container END -->
+        </div>
+    </div>
+
+
+    <!-- Core Vendors JS -->
+    <script src="~/admin_assets/js/vendors.min.js"></script>
+
+    <!-- page js -->
+    <script src="~/admin_assets/js/custom.js"></script>
+    <script src="~/admin_assets/js/pages//profile.js"></script>
+    <script src="~/admin_assets/vendors/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/admin_assets/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/admin_assets/vendors/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin_assets/vendors/quill/quill.min.js"></script>
+    <script src="~/admin_assets/vendors/select2/select2.min.js"></script>
+    <script src="~/admin_assets/js/pages/e-commerce-product-edit.js"></script>
+
+    <!-- Core JS -->
+    <script src="~/admin_assets/js/app.min.js"></script>
+
+
+    @await Component.InvokeAsync("Notyf")
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+
+</html>
